@@ -1,9 +1,4 @@
-/* script.js
- * Antes de subir ao GitHub/vercel: substitua SCRIPT_URL pela URL do seu Apps Script (ver instruções abaixo).
- * Se você não configurar o Apps Script, o formulário salvará no console/localStorage (modo fallback).
- */
-
-const SCRIPT_URL = 'https://api.sheetmonkey.io/form/6oTzuXeWdojq4hSzCAQRKc'; // <-- editar antes de publicar
+const SCRIPT_URL = 'https://api.sheetmonkey.io/form/6oTzuXeWdojq4hSzCAQRKc'; 
 
 document.addEventListener('DOMContentLoaded', () => {
   const ratingButtons = document.querySelectorAll('.emoji');
@@ -45,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const email = document.getElementById('email').value.trim();
     const nota = notaRange.value;
 
-    // Validação simples: exigir uma avaliação por emojis
     if (selectedRating === null) {
       statusEl.textContent = 'Por favor, selecione como foi sua experiência (use as carinhas).';
       return;
@@ -63,21 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      // Se SCRIPT_URL não configurado, usa fallback
       if (!SCRIPT_URL || SCRIPT_URL.includes('COLE_AQUI_SUA_URL')) {
-        // fallback: salvar em localStorage e mostrar no console
         saveFallback(payload);
         statusEl.textContent = 'Avaliação salva localmente (endpoint não configurado).';
         clearForm();
         return;
       }
 
-      // Envia para Apps Script (espera-se que o endpoint aceite JSON)
+      // ✅ Envia para SheetMonkey
       statusEl.textContent = 'Enviando...';
-      const res = await fetch(https://docs.google.com/spreadsheets/d/1ZmDGwn3IQJSHdPMjDm4i-jVH5eyDTRnaSWfpQDGgut8/edit?gid=0#gid=0, {
+      const res = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'cors',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
@@ -86,13 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error(`Resposta do servidor: ${res.status} ${text||''}`);
       }
 
-      // resposta bem-sucedida
-      statusEl.textContent = 'Obrigado! Sua avaliação foi enviada com sucesso.';
+      statusEl.textContent = '✅ Obrigado! Sua avaliação foi enviada com sucesso.';
       clearForm();
 
     } catch (err) {
       console.error('Erro ao enviar avaliação:', err);
-      statusEl.textContent = 'Erro ao enviar avaliação. Conferir console. (Usando fallback de salvamento)';
+      statusEl.textContent = '⚠️ Erro ao enviar avaliação. Conferir console.';
       saveFallback(payload);
       clearForm();
     }
@@ -107,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveFallback(payload){
-    // salva no localStorage para teste
     const key = 'protime_feedback_local';
     const arr = JSON.parse(localStorage.getItem(key) || '[]');
     arr.push(payload);
