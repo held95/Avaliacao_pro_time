@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Avaliação ProTime — Feedback</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Avaliação da plataforma ProTime</h1>
+      <p>Ajude-nos a melhorar — sua opinião importa!</p>
+    </header>
+
+    <form id="feedbackForm" class="card" autocomplete="off">
+      <section class="question">
+        <label class="q-title">1. Como foi sua experiência de usuário?</label>
+        <div class="rating" data-name="experiencia">
+          <!-- 6 níveis: 0 (muito triste) -> 5 (muito feliz) -->
+          <button type="button" class="emoji" data-value="0" aria-label="nota 0">😞</button>
+          <button type="button" class="emoji" data-value="1" aria-label="nota 1">😟</button>
+          <button type="button" class="emoji" data-value="2" aria-label="nota 2">😐</button>
+          <button type="button" class="emoji" data-value="3" aria-label="nota 3">🙂</button>
+          <button type="button" class="emoji" data-value="4" aria-label="nota 4">😀</button>
+          <button type="button" class="emoji" data-value="5" aria-label="nota 5">🤩</button>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">2. Você indicaria para outro médico a utilização dessa plataforma?</label>
+        <div class="radio-group" data-name="indicaria">
+          <label><input type="radio" name="indicaria" value="Sim"> Sim</label>
+          <label><input type="radio" name="indicaria" value="Talvez"> Talvez</label>
+          <label><input type="radio" name="indicaria" value="Não"> Não</label>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">3. Dê uma nota para a plataforma</label>
+        <div class="stars" data-name="nota">
+          <!-- seletor numérico (0-10) com visual simples -->
+          <input id="notaRange" type="range" min="0" max="10" value="8">
+          <div class="range-value" id="notaValue">8</div>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">4. Quais mudanças e melhorias irá realizar na plataforma?</label>
+        <textarea name="melhorias" id="melhorias" rows="4" placeholder="Descreva sugestões, problemas encontrados, ideias..."></textarea>
+      </section>
+
+      <section class="question">
+        <label class="q-title">5. Comentários adicionais (opcional)</label>
+        <input type="text" name="nome" id="nome" placeholder="Seu nome (opcional)">
+        <input type="email" name="email" id="email" placeholder="Seu e-mail (opcional)">
+      </section>
+
+      <div class="actions">
+        <button id="submitBtn" type="submit" class="btn">Enviar avaliação</button>
+        <button id="clearBtn" type="button" class="btn ghost">Limpar</button>
+      </div>
+
+      <div id="status" role="status" aria-live="polite"></div>
+    </form>
+
+    <footer>
+      <small>Obrigado por colaborar com a melhoria da ProTime.</small>
+    </footer>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
