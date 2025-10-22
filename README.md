@@ -8,7 +8,7 @@ Feito em **HTML, CSS e JavaScript puro**, hospedado na **Vercel**.
 ## 🚀 Demonstração
 
 🔗 **Acesse o site online:**  
-[https://protime-feedback.vercel.app](https://protime-feedback.vercel.app) *(exemplo — substitua pelo seu link da Vercel)*
+[https://protime-feedback.vercel.app](https://protime-feedback.vercel.app) 
 
 ---
 
