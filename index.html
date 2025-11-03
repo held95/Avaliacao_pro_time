@@ -14,10 +14,10 @@
     </header>
 
     <form id="feedbackForm" class="card" autocomplete="off">
+      <!-- Perguntas originais -->
       <section class="question">
         <label class="q-title">1. Como foi sua experiência de usuário?</label>
         <div class="rating" data-name="experiencia">
-          <!-- 6 níveis: 0 (muito triste) -> 5 (muito feliz) -->
           <button type="button" class="emoji" data-value="0" aria-label="nota 0">😞</button>
           <button type="button" class="emoji" data-value="1" aria-label="nota 1">😟</button>
           <button type="button" class="emoji" data-value="2" aria-label="nota 2">😐</button>
@@ -39,7 +39,6 @@
       <section class="question">
         <label class="q-title">3. Dê uma nota para a plataforma</label>
         <div class="stars" data-name="nota">
-          <!-- seletor numérico (0-10) com visual simples -->
           <input id="notaRange" type="range" min="0" max="10" value="8">
           <div class="range-value" id="notaValue">8</div>
         </div>
@@ -54,6 +53,81 @@
         <label class="q-title">5. Comentários adicionais (opcional)</label>
         <input type="text" name="nome" id="nome" placeholder="Seu nome (opcional)">
         <input type="email" name="email" id="email" placeholder="Seu e-mail (opcional)">
+      </section>
+
+      <!-- Novas perguntas adicionadas -->
+      <hr>
+
+      <section class="question">
+        <label class="q-title">6. Facilidade de uso</label>
+        <p>Em uma escala de 1 a 5, como você avalia a facilidade de navegação e uso da ferramenta ProTime?<br>
+        (1 = Muito difícil / 5 = Muito fácil)</p>
+        <div class="radio-group" data-name="facilidade">
+          <label><input type="radio" name="facilidade" value="1"> 1</label>
+          <label><input type="radio" name="facilidade" value="2"> 2</label>
+          <label><input type="radio" name="facilidade" value="3"> 3</label>
+          <label><input type="radio" name="facilidade" value="4"> 4</label>
+          <label><input type="radio" name="facilidade" value="5"> 5</label>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">7. Utilidade na rotina médica</label>
+        <p>Em uma escala de 1 a 5, quanto a ProTime ajudou a organizar seus lançamentos e controle de produtividade?<br>
+        (1 = Nenhuma ajuda / 5 = Ajuda essencial)</p>
+        <div class="radio-group" data-name="utilidade">
+          <label><input type="radio" name="utilidade" value="1"> 1</label>
+          <label><input type="radio" name="utilidade" value="2"> 2</label>
+          <label><input type="radio" name="utilidade" value="3"> 3</label>
+          <label><input type="radio" name="utilidade" value="4"> 4</label>
+          <label><input type="radio" name="utilidade" value="5"> 5</label>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">8. Velocidade e eficiência</label>
+        <p>De 1 a 5, como você avalia a rapidez do sistema e o tempo economizado nas tarefas diárias?<br>
+        (1 = Muito lenta / 5 = Extremamente rápida)</p>
+        <div class="radio-group" data-name="velocidade">
+          <label><input type="radio" name="velocidade" value="1"> 1</label>
+          <label><input type="radio" name="velocidade" value="2"> 2</label>
+          <label><input type="radio" name="velocidade" value="3"> 3</label>
+          <label><input type="radio" name="velocidade" value="4"> 4</label>
+          <label><input type="radio" name="velocidade" value="5"> 5</label>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">9. Clareza das informações e suporte</label>
+        <p>De 1 a 5, quão claros e compreensíveis foram os dados e relatórios apresentados pela ProTime?<br>
+        (1 = Confusos / 5 = Muito claros)</p>
+        <div class="radio-group" data-name="clareza">
+          <label><input type="radio" name="clareza" value="1"> 1</label>
+          <label><input type="radio" name="clareza" value="2"> 2</label>
+          <label><input type="radio" name="clareza" value="3"> 3</label>
+          <label><input type="radio" name="clareza" value="4"> 4</label>
+          <label><input type="radio" name="clareza" value="5"> 5</label>
+        </div>
+      </section>
+
+      <section class="question">
+        <label class="q-title">10. Satisfação geral e recomendação</label>
+        <p>💬 Perguntas Qualitativas – Experiência com a ProTime</p>
+
+        <label>1. O que mais te ajudou na ferramenta ProTime durante seu uso?</label>
+        <textarea name="ajuda" rows="3" placeholder="Ex: agilidade, clareza dos relatórios, facilidade no WhatsApp..."></textarea>
+
+        <label>2. Houve algo que você sentiu falta ou gostaria que fosse melhorado?</label>
+        <textarea name="melhorias_qualitativas" rows="3" placeholder="Descreva suas sugestões..."></textarea>
+
+        <label>3. Em quais momentos da sua rotina médica a ProTime foi mais útil para você?</label>
+        <textarea name="momentos" rows="3" placeholder="Explique brevemente..."></textarea>
+
+        <label>4. Se pudesse mudar uma única coisa na ProTime, o que seria?</label>
+        <textarea name="mudanca" rows="3" placeholder="Descreva sua sugestão principal..."></textarea>
+
+        <label>5. Em poucas palavras, como você descreveria a experiência geral de usar a ProTime?</label>
+        <textarea name="experiencia_geral" rows="3" placeholder="Resumo da sua experiência..."></textarea>
       </section>
 
       <div class="actions">
