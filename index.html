@@ -6,9 +6,10 @@
   <title>Avaliação ProTime — Feedback</title>
 
   <style>
+    /* ===== Estilo Geral ===== */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f7f8fa;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e8f0ff, #f5f9ff);
       color: #333;
       margin: 0;
       padding: 0;
@@ -17,24 +18,26 @@
     main.container {
       max-width: 800px;
       margin: 40px auto;
-      padding: 20px;
+      padding: 20px 30px;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
 
     header h1 {
       margin-bottom: 5px;
       color: #004aad;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      color: #555;
+      font-size: 1rem;
     }
 
     .question {
-      margin-bottom: 25px;
-    }
-
-    .q-title::before {
-      content: counter(question) ". ";
-      font-weight: bold;
+      margin-bottom: 30px;
     }
 
     form {
@@ -43,26 +46,51 @@
 
     .q-title {
       display: block;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #002b6e;
       margin-bottom: 10px;
       counter-increment: question;
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    .q-title::before {
+      content: counter(question) ". ";
+      font-weight: 700;
+      color: #004aad;
+    }
+
+    /* ===== EMOJIS ===== */
     .emoji {
       font-size: 1.8rem;
-      margin: 0 5px;
+      margin: 0 6px;
       cursor: pointer;
-      background: none;
-      border: none;
-      transition: transform 0.2s;
+      background: #007bff20;
+      border: 2px solid #007bff40;
+      border-radius: 50%;
+      transition: transform 0.2s, box-shadow 0.3s, background 0.3s, border 0.3s;
+      padding: 8px;
+    }
+
+    .emoji:hover {
+      background: #007bff40;
+      box-shadow: 0 0 12px #4da3ff;
+      border-color: #007bff;
+      transform: scale(1.15);
     }
 
     .emoji.selected {
       transform: scale(1.3);
+      background: #007bff60;
+      box-shadow: 0 0 16px #007bff;
+      border-color: #004aad;
     }
 
+    /* ===== INPUTS E BOTÕES ===== */
     .radio-group label {
       margin-right: 15px;
+      font-size: 0.95rem;
+      color: #333;
     }
 
     input[type="range"] {
@@ -74,15 +102,24 @@
       text-align: center;
       font-weight: bold;
       margin-top: 5px;
+      color: #004aad;
     }
 
     textarea, input[type="text"], input[type="email"] {
       width: 100%;
       padding: 10px;
       margin-top: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      border: 1px solid #ccd3e0;
+      border-radius: 6px;
       font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    textarea:focus, input:focus {
+      border-color: #004aad;
+      box-shadow: 0 0 5px rgba(0,74,173,0.3);
+      outline: none;
     }
 
     .actions {
@@ -94,10 +131,19 @@
       background: #004aad;
       color: #fff;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 6px;
       cursor: pointer;
       margin: 5px;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn:hover {
+      background: #003b8c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,74,173,0.2);
     }
 
     .btn.ghost {
@@ -106,10 +152,16 @@
       color: #004aad;
     }
 
+    .btn.ghost:hover {
+      background: #004aad;
+      color: #fff;
+    }
+
     footer {
       margin-top: 30px;
       text-align: center;
       color: #666;
+      font-size: 0.9rem;
     }
   </style>
 </head>
