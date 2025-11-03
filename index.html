@@ -4,8 +4,116 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Avaliação ProTime — Feedback</title>
-  <link rel="stylesheet" href="./styles.css">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f8fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    main.container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin-bottom: 5px;
+      color: #004aad;
+    }
+
+    .question {
+      margin-bottom: 25px;
+    }
+
+    .q-title::before {
+      content: counter(question) ". ";
+      font-weight: bold;
+    }
+
+    form {
+      counter-reset: question;
+    }
+
+    .q-title {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+      counter-increment: question;
+    }
+
+    .emoji {
+      font-size: 1.8rem;
+      margin: 0 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: transform 0.2s;
+    }
+
+    .emoji.selected {
+      transform: scale(1.3);
+    }
+
+    .radio-group label {
+      margin-right: 15px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .range-value {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    textarea, input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      background: #004aad;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid #004aad;
+      color: #004aad;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #666;
+    }
+  </style>
 </head>
+
 <body>
   <main class="container">
     <header>
@@ -13,22 +121,21 @@
       <p>Ajude-nos a melhorar — sua opinião importa!</p>
     </header>
 
-    <form id="feedbackForm" class="card" autocomplete="off">
-      <!-- Perguntas originais -->
+    <form id="feedbackForm" autocomplete="off">
       <section class="question">
-        <label class="q-title">1. Como foi sua experiência de usuário?</label>
+        <label class="q-title">Como foi sua experiência de usuário?</label>
         <div class="rating" data-name="experiencia">
-          <button type="button" class="emoji" data-value="0" aria-label="nota 0">😞</button>
-          <button type="button" class="emoji" data-value="1" aria-label="nota 1">😟</button>
-          <button type="button" class="emoji" data-value="2" aria-label="nota 2">😐</button>
-          <button type="button" class="emoji" data-value="3" aria-label="nota 3">🙂</button>
-          <button type="button" class="emoji" data-value="4" aria-label="nota 4">😀</button>
-          <button type="button" class="emoji" data-value="5" aria-label="nota 5">🤩</button>
+          <button type="button" class="emoji" data-value="1">😞</button>
+          <button type="button" class="emoji" data-value="2">😟</button>
+          <button type="button" class="emoji" data-value="3">😐</button>
+          <button type="button" class="emoji" data-value="4">🙂</button>
+          <button type="button" class="emoji" data-value="5">😀</button>
+          <button type="button" class="emoji" data-value="6">🤩</button>
         </div>
       </section>
 
       <section class="question">
-        <label class="q-title">2. Você indicaria para outro médico a utilização dessa plataforma?</label>
+        <label class="q-title">Você indicaria para outro médico a utilização dessa plataforma?</label>
         <div class="radio-group" data-name="indicaria">
           <label><input type="radio" name="indicaria" value="Sim"> Sim</label>
           <label><input type="radio" name="indicaria" value="Talvez"> Talvez</label>
@@ -37,97 +144,70 @@
       </section>
 
       <section class="question">
-        <label class="q-title">3. Dê uma nota para a plataforma</label>
-        <div class="stars" data-name="nota">
-          <input id="notaRange" type="range" min="0" max="10" value="8">
-          <div class="range-value" id="notaValue">8</div>
-        </div>
+        <label class="q-title">Dê uma nota para a plataforma</label>
+        <input id="notaRange" type="range" min="0" max="10" value="8">
+        <div class="range-value" id="notaValue">8</div>
       </section>
 
       <section class="question">
-        <label class="q-title">4. Quais mudanças e melhorias irá realizar na plataforma?</label>
-        <textarea name="melhorias" id="melhorias" rows="4" placeholder="Descreva sugestões, problemas encontrados, ideias..."></textarea>
+        <label class="q-title">Quais mudanças e melhorias você sugere?</label>
+        <textarea name="melhorias" rows="4" placeholder="Descreva sugestões, problemas encontrados, ideias..."></textarea>
       </section>
 
       <section class="question">
-        <label class="q-title">5. Comentários adicionais (opcional)</label>
-        <input type="text" name="nome" id="nome" placeholder="Seu nome (opcional)">
-        <input type="email" name="email" id="email" placeholder="Seu e-mail (opcional)">
+        <label class="q-title">Comentários adicionais (opcional)</label>
+        <input type="text" name="nome" placeholder="Seu nome (opcional)">
+        <input type="email" name="email" placeholder="Seu e-mail (opcional)">
       </section>
 
-      <!-- Novas perguntas adicionadas -->
       <hr>
 
       <section class="question">
-        <label class="q-title">6. Facilidade de uso</label>
-        <p>Em uma escala de 1 a 5, como você avalia a facilidade de navegação e uso da ferramenta ProTime?<br>
-        (1 = Muito difícil / 5 = Muito fácil)</p>
-        <div class="radio-group" data-name="facilidade">
-          <label><input type="radio" name="facilidade" value="1"> 1</label>
-          <label><input type="radio" name="facilidade" value="2"> 2</label>
-          <label><input type="radio" name="facilidade" value="3"> 3</label>
-          <label><input type="radio" name="facilidade" value="4"> 4</label>
-          <label><input type="radio" name="facilidade" value="5"> 5</label>
-        </div>
+        <label class="q-title">Facilidade de uso</label>
+        <p>De 1 a 5, como você avalia a facilidade de uso da ProTime?</p>
+        <input type="range" min="1" max="5" value="3" class="rangeInput">
+        <div class="range-value">3</div>
       </section>
 
       <section class="question">
-        <label class="q-title">7. Utilidade na rotina médica</label>
-        <p>Em uma escala de 1 a 5, quanto a ProTime ajudou a organizar seus lançamentos e controle de produtividade?<br>
-        (1 = Nenhuma ajuda / 5 = Ajuda essencial)</p>
-        <div class="radio-group" data-name="utilidade">
-          <label><input type="radio" name="utilidade" value="1"> 1</label>
-          <label><input type="radio" name="utilidade" value="2"> 2</label>
-          <label><input type="radio" name="utilidade" value="3"> 3</label>
-          <label><input type="radio" name="utilidade" value="4"> 4</label>
-          <label><input type="radio" name="utilidade" value="5"> 5</label>
-        </div>
+        <label class="q-title">Utilidade na rotina médica</label>
+        <p>Quanto a ProTime ajudou a organizar seus lançamentos e produtividade?</p>
+        <input type="range" min="1" max="5" value="4" class="rangeInput">
+        <div class="range-value">4</div>
       </section>
 
       <section class="question">
-        <label class="q-title">8. Velocidade e eficiência</label>
-        <p>De 1 a 5, como você avalia a rapidez do sistema e o tempo economizado nas tarefas diárias?<br>
-        (1 = Muito lenta / 5 = Extremamente rápida)</p>
-        <div class="radio-group" data-name="velocidade">
-          <label><input type="radio" name="velocidade" value="1"> 1</label>
-          <label><input type="radio" name="velocidade" value="2"> 2</label>
-          <label><input type="radio" name="velocidade" value="3"> 3</label>
-          <label><input type="radio" name="velocidade" value="4"> 4</label>
-          <label><input type="radio" name="velocidade" value="5"> 5</label>
-        </div>
+        <label class="q-title">Velocidade e eficiência</label>
+        <p>Como você avalia a rapidez do sistema?</p>
+        <input type="range" min="1" max="5" value="3" class="rangeInput">
+        <div class="range-value">3</div>
       </section>
 
       <section class="question">
-        <label class="q-title">9. Clareza das informações e suporte</label>
-        <p>De 1 a 5, quão claros e compreensíveis foram os dados e relatórios apresentados pela ProTime?<br>
-        (1 = Confusos / 5 = Muito claros)</p>
-        <div class="radio-group" data-name="clareza">
-          <label><input type="radio" name="clareza" value="1"> 1</label>
-          <label><input type="radio" name="clareza" value="2"> 2</label>
-          <label><input type="radio" name="clareza" value="3"> 3</label>
-          <label><input type="radio" name="clareza" value="4"> 4</label>
-          <label><input type="radio" name="clareza" value="5"> 5</label>
-        </div>
+        <label class="q-title">Clareza das informações</label>
+        <p>Os relatórios e dados são claros e compreensíveis?</p>
+        <input type="range" min="1" max="5" value="4" class="rangeInput">
+        <div class="range-value">4</div>
       </section>
 
       <section class="question">
-        <label class="q-title">10. Satisfação geral e recomendação</label>
-        <p>💬 Perguntas Qualitativas – Experiência com a ProTime</p>
+        <label class="q-title">Satisfação geral</label>
+        <p>💬 Perguntas qualitativas</p>
 
-        <label>1. O que mais te ajudou na ferramenta ProTime durante seu uso?</label>
-        <textarea name="ajuda" rows="3" placeholder="Ex: agilidade, clareza dos relatórios, facilidade no WhatsApp..."></textarea>
+        <label>O que mais te ajudou na ProTime?</label>
+        <textarea rows="3" placeholder="Ex: agilidade, relatórios claros, WhatsApp..."></textarea>
 
-        <label>2. Houve algo que você sentiu falta ou gostaria que fosse melhorado?</label>
-        <textarea name="melhorias_qualitativas" rows="3" placeholder="Descreva suas sugestões..."></textarea>
+        <label>O que você gostaria que fosse melhorado?</label>
+        <textarea rows="3" placeholder="Descreva suas sugestões..."></textarea>
 
-        <label>3. Em quais momentos da sua rotina médica a ProTime foi mais útil para você?</label>
-        <textarea name="momentos" rows="3" placeholder="Explique brevemente..."></textarea>
+        <label>Em quais momentos a ProTime foi mais útil?</label>
+        <textarea rows="3" placeholder="Explique brevemente..."></textarea>
 
-        <label>4. Se pudesse mudar uma única coisa na ProTime, o que seria?</label>
-        <textarea name="mudanca" rows="3" placeholder="Descreva sua sugestão principal..."></textarea>
+        <label>Se pudesse mudar uma coisa na ProTime, o que seria?</label>
+        <textarea rows="3" placeholder="Descreva sua principal sugestão..."></textarea>
 
-        <label>5. Em poucas palavras, como você descreveria a experiência geral de usar a ProTime?</label>
-        <textarea name="experiencia_geral" rows="3" placeholder="Resumo da sua experiência..."></textarea>
+        <label>Como você descreveria sua experiência geral?</label>
+        <textarea rows="3" placeholder="Resumo da sua experiência..."></textarea>
       </section>
 
       <div class="actions">
@@ -143,6 +223,38 @@
     </footer>
   </main>
 
-  <script src="./script.js"></script>
+  <script>
+    // --- Escalas de emoji ---
+    document.querySelectorAll('.rating').forEach(group => {
+      const buttons = group.querySelectorAll('.emoji');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+      });
+    });
+
+    // --- Atualiza valores dos sliders ---
+    document.querySelectorAll('input[type="range"]').forEach(range => {
+      const valueDisplay = range.nextElementSibling;
+      range.addEventListener('input', () => {
+        valueDisplay.textContent = range.value;
+      });
+    });
+
+    // --- Botão Limpar ---
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      document.getElementById('feedbackForm').reset();
+      document.querySelectorAll('.emoji').forEach(e => e.classList.remove('selected'));
+      document.querySelectorAll('.range-value').forEach(v => v.textContent = '');
+    });
+
+    // --- Simula envio ---
+    document.getElementById('feedbackForm').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('status').textContent = "✅ Obrigado! Seu feedback foi enviado com sucesso.";
+    });
+  </script>
 </body>
 </html>
