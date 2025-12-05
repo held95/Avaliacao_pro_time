@@ -49,11 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       statusEl.textContent = "Enviando...";
 
-      const res = await fetch(SCRIPT_URL, {
+      const formData = new URLSearchParams(payload);
+
+const res = await fetch(SCRIPT_URL, {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload)
+  body: formData  // sem headers -> o browser manda como application/x-www-form-urlencoded
 });
+
 
       if (!response.ok) {
         throw new Error(`SheetMonkey respondeu: ${response.status}`);
@@ -90,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🔄 Backup local salvo →", payload);
   }
 });
+
 
 
 
