@@ -51,9 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new URLSearchParams(payload);
 
-const res = await fetch(SCRIPT_URL, {
+await fetch(SCRIPT_URL, {
   method: "POST",
-  body: formData  // sem headers -> o browser manda como application/x-www-form-urlencoded
+  body: formData
 });
 
 
@@ -92,6 +92,7 @@ const res = await fetch(SCRIPT_URL, {
     console.log("🔄 Backup local salvo →", payload);
   }
 });
+
 
 
 
