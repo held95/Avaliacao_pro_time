@@ -1,106 +1,96 @@
-const SCRIPT_URL = 'https://api.sheetmonkey.io/form/6oTzuXeWdojq4hSzCAQRKc'; 
+const SCRIPT_URL = "https://api.sheetmonkey.io/form/6oTzuXeWdojq4hSzCAQRKc";
 
-document.addEventListener('DOMContentLoaded', () => {
-  const ratingButtons = document.querySelectorAll('.emoji');
-  const notaRange = document.getElementById('notaRange');
-  const notaValue = document.getElementById('notaValue');
-  const feedbackForm = document.getElementById('feedbackForm');
-  const statusEl = document.getElementById('status');
-  const clearBtn = document.getElementById('clearBtn');
+document.addEventListener("DOMContentLoaded", () => {
+  const ratingButtons = document.querySelectorAll(".emoji");
+  const notaRange = document.getElementById("notaRange");
+  const notaValue = document.getElementById("notaValue");
+  const feedbackForm = document.getElementById("feedbackForm");
+  const statusEl = document.getElementById("status");
+  const clearBtn = document.getElementById("clearBtn");
 
   let selectedRating = null;
 
-  // Emojis rating
-  ratingButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      ratingButtons.forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+  // emojis
+  ratingButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      ratingButtons.forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
       selectedRating = btn.dataset.value;
     });
   });
 
-  // range display
-  notaRange.addEventListener('input', () => {
+  // range
+  notaRange.addEventListener("input", () => {
     notaValue.textContent = notaRange.value;
   });
 
-  // clear form
-  clearBtn.addEventListener('click', () => {
-    clearForm();
-  });
+  clearBtn.addEventListener("click", () => clearForm());
 
-  // submit
-  feedbackForm.addEventListener('submit', async (e) => {
+  feedbackForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    statusEl.textContent = '';
+    statusEl.textContent = "";
 
-    const indicaria = feedbackForm.querySelector('input[name="indicaria"]:checked')?.value || '';
-    const melhorias = document.getElementById('melhorias').value.trim();
-    const nome = document.getElementById('nome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const nota = notaRange.value;
-
-    if (selectedRating === null) {
-      statusEl.textContent = 'Por favor, selecione como foi sua experiência (use as carinhas).';
+    if (!selectedRating) {
+      statusEl.textContent = "Por favor, selecione como foi sua experiência.";
       return;
     }
 
     const payload = {
       timestamp: new Date().toISOString(),
       experiencia_emoji: selectedRating,
-      indicaria,
-      nota_plataforma: nota,
-      sugestoes_melhorias: melhorias,
-      nome,
-      email,
+      indicaria: feedbackForm.querySelector('input[name="indicaria"]:checked')?.value || "",
+      nota_plataforma: notaRange.value,
+      sugestoes_melhorias: document.getElementById("melhorias").value.trim(),
+      nome: document.getElementById("nome").value.trim(),
+      email: document.getElementById("email").value.trim(),
       userAgent: navigator.userAgent
     };
 
     try {
-      if (!SCRIPT_URL || SCRIPT_URL.includes('COLE_AQUI_SUA_URL')) {
-        saveFallback(payload);
-        statusEl.textContent = 'Avaliação salva localmente (endpoint não configurado).';
-        clearForm();
-        return;
-      }
+      statusEl.textContent = "Enviando...";
 
-      // ✅ Envia para SheetMonkey
-      statusEl.textContent = 'Enviando...';
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(payload),
+        mode: "cors"
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(()=>null);
-        throw new Error(`Resposta do servidor: ${res.status} ${text||''}`);
+      if (!response.ok) {
+        throw new Error(`SheetMonkey respondeu: ${response.status}`);
       }
 
-      statusEl.textContent = '✅ Obrigado! Sua avaliação foi enviada com sucesso.';
+      statusEl.textContent = "✅ Obrigado! Sua avaliação foi enviada.";
       clearForm();
-
     } catch (err) {
-      console.error('Erro ao enviar avaliação:', err);
-      statusEl.textContent = '⚠️ Erro ao enviar avaliação. Conferir console.';
+      console.error("Erro ao enviar para SheetMonkey:", err);
+
+      statusEl.innerHTML =
+        "⚠️ Não foi possível enviar ao servidor.<br>O feedback foi salvo offline.";
+
       saveFallback(payload);
       clearForm();
     }
   });
 
-  function clearForm(){
-    ratingButtons.forEach(b => b.classList.remove('selected'));
+  function clearForm() {
+    ratingButtons.forEach((b) => b.classList.remove("selected"));
     selectedRating = null;
+
     feedbackForm.reset();
     notaRange.value = 8;
-    notaValue.textContent = 8;
+    notaValue.textContent = "8";
   }
 
-  function saveFallback(payload){
-    const key = 'protime_feedback_local';
-    const arr = JSON.parse(localStorage.getItem(key) || '[]');
+  function saveFallback(payload) {
+    const key = "protime_feedback_local";
+    const arr = JSON.parse(localStorage.getItem(key) || "[]");
     arr.push(payload);
     localStorage.setItem(key, JSON.stringify(arr));
-    console.log('Fallback save ->', payload);
+
+    console.log("🔄 Backup local salvo →", payload);
   }
 });
