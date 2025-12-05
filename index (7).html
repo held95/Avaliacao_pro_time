@@ -1,0 +1,65 @@
+<script>
+const BIN_ID = "69331591d0ea881f40152965";
+const API_KEY = "$2a$10$/rLQU2j6EYy3acI3r/2iezHevzw4TRWGG3hF.uo3xl6AcZAJtWxe";
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
+async function salvarFeedback(feedback) {
+  const resposta = await fetch(JSONBIN_URL, {
+    method: "GET",
+    headers: { "X-Master-Key": API_KEY }
+  });
+
+  const json = await resposta.json();
+  let lista = json.record.feedbacks || [];
+
+  lista.push(feedback);
+
+  return fetch(JSONBIN_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": API_KEY,
+      "X-Bin-Versioning": "off"
+    },
+    body: JSON.stringify({ feedbacks: lista })
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  
+  const form = document.getElementById("feedbackForm");
+  const statusEl = document.getElementById("status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const selectedRating = document.querySelector(".emoji.selected")?.dataset.value;
+
+    if (!selectedRating) {
+      statusEl.textContent = "Por favor selecione uma carinha.";
+      return;
+    }
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      experiencia: selectedRating,
+      indicaria: form.querySelector('input[name="indicaria"]:checked')?.value || "",
+      nota: document.getElementById("notaRange").value,
+      melhorias: form.querySelector("textarea[name='melhorias']").value,
+      nome: form.querySelector("input[name='nome']").value,
+      email: form.querySelector("input[name='email']").value,
+    };
+
+    try {
+      statusEl.textContent = "Enviando...";
+      await salvarFeedback(payload);
+      statusEl.textContent = "Feedback enviado com sucesso!";
+      form.reset();
+    } 
+    catch (err) {
+      console.error(err);
+      statusEl.textContent = "Erro ao enviar feedback.";
+    }
+  });
+});
+</script>
