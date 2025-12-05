@@ -1,312 +1,65 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Avaliação ProTime — Feedback</title>
+<script>
+const BIN_ID = "69331591d0ea881f40152965";
+const API_KEY = "$2a$10$/rLQU2j6EYy3acI3r/2iezHevzw4TRWGG3hF.uo3xl6AcZAJtWxe";
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-  <style>
-    /* ===== Estilo Geral ===== */
-    body {
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e8f0ff, #f5f9ff);
-      color: #333;
-      margin: 0;
-      padding: 0;
+async function salvarFeedback(feedback) {
+  const resposta = await fetch(JSONBIN_URL, {
+    method: "GET",
+    headers: { "X-Master-Key": API_KEY }
+  });
+
+  const json = await resposta.json();
+  let lista = json.record.feedbacks || [];
+
+  lista.push(feedback);
+
+  return fetch(JSONBIN_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": API_KEY,
+      "X-Bin-Versioning": "off"
+    },
+    body: JSON.stringify({ feedbacks: lista })
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  
+  const form = document.getElementById("feedbackForm");
+  const statusEl = document.getElementById("status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const selectedRating = document.querySelector(".emoji.selected")?.dataset.value;
+
+    if (!selectedRating) {
+      statusEl.textContent = "Por favor selecione uma carinha.";
+      return;
     }
 
-    main.container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px 30px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    const payload = {
+      timestamp: new Date().toISOString(),
+      experiencia: selectedRating,
+      indicaria: form.querySelector('input[name="indicaria"]:checked')?.value || "",
+      nota: document.getElementById("notaRange").value,
+      melhorias: form.querySelector("textarea[name='melhorias']").value,
+      nome: form.querySelector("input[name='nome']").value,
+      email: form.querySelector("input[name='email']").value,
+    };
+
+    try {
+      statusEl.textContent = "Enviando...";
+      await salvarFeedback(payload);
+      statusEl.textContent = "Feedback enviado com sucesso!";
+      form.reset();
+    } 
+    catch (err) {
+      console.error(err);
+      statusEl.textContent = "Erro ao enviar feedback.";
     }
-
-    header h1 {
-      margin-bottom: 5px;
-      color: #004aad;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    header p {
-      color: #555;
-      font-size: 1rem;
-    }
-
-    .question {
-      margin-bottom: 30px;
-    }
-
-    form {
-      counter-reset: question;
-    }
-
-    .q-title {
-      display: block;
-      font-weight: 600;
-      font-size: 1.05rem;
-      color: #002b6e;
-      margin-bottom: 10px;
-      counter-increment: question;
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .q-title::before {
-      content: counter(question) ". ";
-      font-weight: 700;
-      color: #004aad;
-    }
-
-    /* ===== EMOJIS ===== */
-    .emoji {
-      font-size: 1.8rem;
-      margin: 0 6px;
-      cursor: pointer;
-      background: #007bff20;
-      border: 2px solid #007bff40;
-      border-radius: 50%;
-      transition: transform 0.2s, box-shadow 0.3s, background 0.3s, border 0.3s;
-      padding: 8px;
-    }
-
-    .emoji:hover {
-      background: #007bff40;
-      box-shadow: 0 0 12px #4da3ff;
-      border-color: #007bff;
-      transform: scale(1.15);
-    }
-
-    .emoji.selected {
-      transform: scale(1.3);
-      background: #007bff60;
-      box-shadow: 0 0 16px #007bff;
-      border-color: #004aad;
-    }
-
-    /* ===== INPUTS E BOTÕES ===== */
-    .radio-group label {
-      margin-right: 15px;
-      font-size: 0.95rem;
-      color: #333;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .range-value {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 5px;
-      color: #004aad;
-    }
-
-    textarea, input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border: 1px solid #ccd3e0;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      transition: border 0.2s, box-shadow 0.2s;
-    }
-
-    textarea:focus, input:focus {
-      border-color: #004aad;
-      box-shadow: 0 0 5px rgba(0,74,173,0.3);
-      outline: none;
-    }
-
-    .actions {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .btn {
-      background: #004aad;
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 5px;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .btn:hover {
-      background: #003b8c;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0,74,173,0.2);
-    }
-
-    .btn.ghost {
-      background: transparent;
-      border: 1px solid #004aad;
-      color: #004aad;
-    }
-
-    .btn.ghost:hover {
-      background: #004aad;
-      color: #fff;
-    }
-
-    footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #666;
-      font-size: 0.9rem;
-    }
-  </style>
-</head>
-
-<body>
-  <main class="container">
-    <header>
-      <h1>Avaliação da plataforma ProTime</h1>
-      <p>Ajude-nos a melhorar — sua opinião importa!</p>
-    </header>
-
-    <form id="feedbackForm" autocomplete="off">
-      <section class="question">
-        <label class="q-title">Como foi sua experiência de usuário?</label>
-        <div class="rating" data-name="experiencia">
-          <button type="button" class="emoji" data-value="1">😞</button>
-          <button type="button" class="emoji" data-value="2">😟</button>
-          <button type="button" class="emoji" data-value="3">😐</button>
-          <button type="button" class="emoji" data-value="4">🙂</button>
-          <button type="button" class="emoji" data-value="5">😀</button>
-          <button type="button" class="emoji" data-value="6">🤩</button>
-        </div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Você indicaria para outro médico a utilização dessa plataforma?</label>
-        <div class="radio-group" data-name="indicaria">
-          <label><input type="radio" name="indicaria" value="Sim"> Sim</label>
-          <label><input type="radio" name="indicaria" value="Talvez"> Talvez</label>
-          <label><input type="radio" name="indicaria" value="Não"> Não</label>
-        </div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Dê uma nota para a plataforma</label>
-        <input id="notaRange" type="range" min="0" max="10" value="8">
-        <div class="range-value" id="notaValue">8</div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Quais mudanças e melhorias você sugere?</label>
-        <textarea name="melhorias" rows="4" placeholder="Descreva sugestões, problemas encontrados, ideias..."></textarea>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Comentários adicionais (opcional)</label>
-        <input type="text" name="nome" placeholder="Seu nome (opcional)">
-        <input type="email" name="email" placeholder="Seu e-mail (opcional)">
-      </section>
-
-      <hr>
-
-      <section class="question">
-        <label class="q-title">Facilidade de uso</label>
-        <p>De 1 a 5, como você avalia a facilidade de uso da ProTime?</p>
-        <input type="range" min="1" max="5" value="3" class="rangeInput">
-        <div class="range-value">3</div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Utilidade na rotina médica</label>
-        <p>Quanto a ProTime ajudou a organizar seus lançamentos e produtividade?</p>
-        <input type="range" min="1" max="5" value="4" class="rangeInput">
-        <div class="range-value">4</div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Velocidade e eficiência</label>
-        <p>Como você avalia a rapidez do sistema?</p>
-        <input type="range" min="1" max="5" value="3" class="rangeInput">
-        <div class="range-value">3</div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Clareza das informações</label>
-        <p>Os relatórios e dados são claros e compreensíveis?</p>
-        <input type="range" min="1" max="5" value="4" class="rangeInput">
-        <div class="range-value">4</div>
-      </section>
-
-      <section class="question">
-        <label class="q-title">Satisfação geral</label>
-        <p>💬 Perguntas qualitativas</p>
-
-        <label>O que mais te ajudou na ProTime?</label>
-        <textarea rows="3" placeholder="Ex: agilidade, relatórios claros, WhatsApp..."></textarea>
-
-        <label>O que você gostaria que fosse melhorado?</label>
-        <textarea rows="3" placeholder="Descreva suas sugestões..."></textarea>
-
-        <label>Em quais momentos a ProTime foi mais útil?</label>
-        <textarea rows="3" placeholder="Explique brevemente..."></textarea>
-
-        <label>Se pudesse mudar uma coisa na ProTime, o que seria?</label>
-        <textarea rows="3" placeholder="Descreva sua principal sugestão..."></textarea>
-
-        <label>Como você descreveria sua experiência geral?</label>
-        <textarea rows="3" placeholder="Resumo da sua experiência..."></textarea>
-      </section>
-
-      <div class="actions">
-        <button id="submitBtn" type="submit" class="btn">Enviar avaliação</button>
-        <button id="clearBtn" type="button" class="btn ghost">Limpar</button>
-      </div>
-
-      <div id="status" role="status" aria-live="polite"></div>
-    </form>
-
-    <footer>
-      <small>Obrigado por colaborar com a melhoria da ProTime.</small>
-    </footer>
-  </main>
-
-  <script>
-    // --- Escalas de emoji ---
-    document.querySelectorAll('.rating').forEach(group => {
-      const buttons = group.querySelectorAll('.emoji');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          buttons.forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-        });
-      });
-    });
-
-    // --- Atualiza valores dos sliders ---
-    document.querySelectorAll('input[type="range"]').forEach(range => {
-      const valueDisplay = range.nextElementSibling;
-      range.addEventListener('input', () => {
-        valueDisplay.textContent = range.value;
-      });
-    });
-
-    // --- Botão Limpar ---
-    document.getElementById('clearBtn').addEventListener('click', () => {
-      document.getElementById('feedbackForm').reset();
-      document.querySelectorAll('.emoji').forEach(e => e.classList.remove('selected'));
-      document.querySelectorAll('.range-value').forEach(v => v.textContent = '');
-    });
-
-    // --- Simula envio ---
-    document.getElementById('feedbackForm').addEventListener('submit', e => {
-      e.preventDefault();
-      document.getElementById('status').textContent = "✅ Obrigado! Seu feedback foi enviado com sucesso.";
-    });
-  </script>
-</body>
-</html>
+  });
+});
+</script>
