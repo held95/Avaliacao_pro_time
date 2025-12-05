@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNEW_ID_AQUI/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0P6BpHQZTEGt9_JaUoUQxUfb0pUdT2oUfU6zEkUxHDU8GcDLaM5b74Nr1TLtQFZzQ/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const ratingButtons = document.querySelectorAll(".emoji");
@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedRating = null;
 
-  // selecionar emoji
   ratingButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       ratingButtons.forEach((b) => b.classList.remove("selected"));
@@ -19,15 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // mostrar valor do range
   notaRange.addEventListener("input", () => {
     notaValue.textContent = notaRange.value;
   });
 
-  // limpar
   clearBtn.addEventListener("click", () => clearForm());
 
-  // enviar
   feedbackForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusEl.textContent = "";
@@ -54,15 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
-        body: formData,
+        mode: "no-cors",     // importante (Vercel -> Google)
+        body: formData       // e.parameter no Apps Script
       });
 
       statusEl.textContent = "Obrigado! Feedback enviado.";
       clearForm();
     } catch (err) {
       console.error(err);
-      statusEl.textContent = "Erro ao enviar. Salvando no dispositivo.";
+      statusEl.textContent = "Erro ao enviar. Tente novamente mais tarde.";
     }
   });
 
@@ -74,4 +70,3 @@ document.addEventListener("DOMContentLoaded", () => {
     notaValue.textContent = "8";
   }
 });
-
