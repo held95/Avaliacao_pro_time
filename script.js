@@ -1,32 +1,41 @@
 // 🔧 CONFIG JSONBIN.IO
 const BIN_ID = "69331591d0ea881f40152965";  
-const API_KEY = "$2a$10$BDVWfPs2WXIPsw8Kd1kQfOVtRImf506MKMwjsJ8q7Z86MQJozfF9a";
+const API_KEY = "$2a$10$X/rLQU2j6EYy3acl3r/2ieZHevzw4TRWGG3hF.uo3xl6AcZAJtWxe";
+
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
-// 🔧 Função para salvar feedback no JSONBin (PUT atualiza todo o JSON)
+
+// 🔧 Função para salvar feedback no JSONBin
 async function salvarFeedback(feedback) {
-  // Busca dados atuais
-  const dadosAtuais = await fetch(JSONBIN_URL, {
-    headers: { "X-Master-Key": API_KEY }
-  }).then(r => r.json());
 
-  // Atualiza lista
-  const novosFeedbacks = dadosAtuais.record.feedbacks || [];
-  novosFeedbacks.push(feedback);
+  // 1️⃣ Buscar conteúdo atual
+  const resposta = await fetch(JSONBIN_URL, {
+    method: "GET",
+    headers: {
+      "X-Master-Key": API_KEY
+    }
+  });
 
-  // Envia de volta para o JSONBin
+  const json = await resposta.json();
+
+  let lista = json.record.feedbacks || [];
+  lista.push(feedback);
+
+  // 2️⃣ Enviar atualização via PUT
   return fetch(JSONBIN_URL, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "X-Master-Key": API_KEY
+      "X-Master-Key": API_KEY,
+      "X-Bin-Versioning": "off"
     },
-    body: JSON.stringify({ feedbacks: novosFeedbacks })
-  }).then(r => r.json());
+    body: JSON.stringify({ feedbacks: lista })
+  });
 }
 
 
-// 🔥 CÓDIGO PRINCIPAL DO FORMULÁRIO
+
+// 🔥 FORMULÁRIO
 document.addEventListener("DOMContentLoaded", () => {
   const ratingButtons = document.querySelectorAll(".emoji");
   const notaRange = document.getElementById("notaRange");
@@ -37,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let selectedRating = null;
 
-  // ⭐ Seleção das carinhas
   ratingButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       ratingButtons.forEach((b) => b.classList.remove("selected"));
@@ -46,15 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ⭐ Mostra valor do range
   notaRange.addEventListener("input", () => {
     notaValue.textContent = notaRange.value;
   });
 
-  // ⭐ Botão limpar
   clearBtn.addEventListener("click", () => clearForm());
 
-  // ⭐ Envio do formulário
   feedbackForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     statusEl.textContent = "";
@@ -64,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 📦 Dados a serem enviados
     const payload = {
       timestamp: new Date().toISOString(),
       experiencia_emoji: selectedRating,
@@ -81,15 +85,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       await salvarFeedback(payload);
 
-      statusEl.textContent = "Obrigado! Feedback enviado com sucesso.";
+      statusEl.textContent = "Feedback enviado com sucesso!";
       clearForm();
+
     } catch (err) {
-      console.error("Erro JSONBin → ", err);
-      statusEl.textContent = "Erro ao enviar. Tente novamente.";
+      console.error("Erro ao salvar feedback:", err);
+      statusEl.textContent = "Erro ao enviar feedback.";
     }
   });
 
-  // ⭐ Reset visual
   function clearForm() {
     feedbackForm.reset();
     ratingButtons.forEach((b) => b.classList.remove("selected"));
