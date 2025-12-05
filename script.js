@@ -1,6 +1,6 @@
 // 🔧 CONFIG JSONBIN.IO
 const BIN_ID = "69331591d0ea881f40152965";  
-const API_KEY = "$2a$10$X/rLQU2j6EYy3acl3r/2ieZHevzw4TRWGG3hF.uo3xl6AcZAJtWxe";
+const API_KEY = "$2a$10$lbD5LObyu0XoE0mHET5HguCkRTVpJD7hL.HkCviLOMg6p4N8YnGui";
 
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
@@ -102,3 +102,4 @@ document.addEventListener("DOMContentLoaded", () => {
     notaValue.textContent = "8";
   }
 });
+
