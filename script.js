@@ -1,6 +1,6 @@
 // 🔧 CONFIG JSONBIN.IO
-const BIN_ID = "69331591d0ea881f40152965";  
-const API_KEY = "$2a$10$lbD5LObyu0XoE0mHET5HguCkRTVpJD7hL.HkCviLOMg6p4N8YnGui";
+const BIN_ID = "69331591d0ea881f40152965";
+const API_KEY = "$2a$10$/rLQU2j6EYy3acI3r/2iezHevzw4TRWGG3hF.uo3xl6AcZAJtWxe";  // MASTER KEY CORRETA
 
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
@@ -17,11 +17,11 @@ async function salvarFeedback(feedback) {
   });
 
   const json = await resposta.json();
-
   let lista = json.record.feedbacks || [];
+
   lista.push(feedback);
 
-  // 2️⃣ Enviar atualização via PUT
+  // 2️⃣ Atualizar conteúdo
   return fetch(JSONBIN_URL, {
     method: "PUT",
     headers: {
@@ -32,7 +32,6 @@ async function salvarFeedback(feedback) {
     body: JSON.stringify({ feedbacks: lista })
   });
 }
-
 
 
 // 🔥 FORMULÁRIO
@@ -102,4 +101,5 @@ document.addEventListener("DOMContentLoaded", () => {
     notaValue.textContent = "8";
   }
 });
+
 
