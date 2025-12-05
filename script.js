@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://api.sheetmonkey.io/form/6oTzuXeWdojq4hSzCAQRKc";
+const SCRIPT_URL = "https://api.sheetmonkey.io/form/fzE2MGWtBeqJuMVd6QnCgn";
 
 document.addEventListener("DOMContentLoaded", () => {
   const ratingButtons = document.querySelectorAll(".emoji");
@@ -94,3 +94,4 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🔄 Backup local salvo →", payload);
   }
 });
+
