@@ -1,4 +1,4 @@
-const SCRIPT_URL = "/api/feedback";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxONG348u2l5WeGlYvZbBTlej0G6wOY_URvRLjwj4-Sw42IMUDidQdDhLfaXdYdaTCH/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
   const ratingButtons = document.querySelectorAll(".emoji");
@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🔄 Backup local salvo →", payload);
   }
 });
+
 
 
 
