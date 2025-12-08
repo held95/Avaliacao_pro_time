@@ -1,62 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<option value="5">5 - Ajuda essencial</option>
-</select>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avaliação ProTime</title>
 
+  <!-- Fonte Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<label>Velocidade e eficiência (1 a 5)</label>
-<select id="velocidade" required>
-<option value="">Selecione...</option>
-<option value="1">1 - Muito lenta</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5 - Extremamente rápida</option>
-</select>
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="style.css" />
+</head>
 
+<body>
+  <div class="card">
+    <h1>Pesquisa de Experiência ProTime</h1>
 
-<label>Clareza das informações e suporte (1 a 5)</label>
-<select id="clareza" required>
-<option value="">Selecione...</option>
-<option value="1">1 - Confusos</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5 - Muito claros</option>
-</select>
+    <form id="form-avaliacao">
 
+      <label>Facilidade de uso (1 a 5)</label>
+      <select id="facilidade" required>
+        <option value="">Selecione...</option>
+        <option value="1">1 - Muito difícil</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 - Muito fácil</option>
+      </select>
 
-<label>O que mais te ajudou na ProTime?</label>
-<textarea id="ajuda" required></textarea>
+      <label>Utilidade na rotina médica (1 a 5)</label>
+      <select id="utilidade" required>
+        <option value="">Selecione...</option>
+        <option value="1">1 - Nenhuma ajuda</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 - Ajuda essencial</option>
+      </select>
 
+      <label>Velocidade e eficiência (1 a 5)</label>
+      <select id="velocidade" required>
+        <option value="">Selecione...</option>
+        <option value="1">1 - Muito lenta</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 - Extremamente rápida</option>
+      </select>
 
-<label>O que faltou ou poderia melhorar?</label>
-<textarea id="melhorar" required></textarea>
+      <label>Clareza das informações e suporte (1 a 5)</label>
+      <select id="clareza" required>
+        <option value="">Selecione...</option>
+        <option value="1">1 - Confusos</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5 - Muito claros</option>
+      </select>
 
+      <label>O que mais te ajudou na ProTime?</label>
+      <textarea id="ajuda" required></textarea>
 
-<label>Em quais momentos a ProTime foi mais útil?</label>
-<textarea id="momentos" required></textarea>
+      <label>O que faltou ou poderia melhorar?</label>
+      <textarea id="melhorar" required></textarea>
 
+      <label>Em quais momentos a ProTime foi mais útil?</label>
+      <textarea id="momentos" required></textarea>
 
-<label>Se pudesse mudar uma única coisa, o que seria?</label>
-<textarea id="mudanca" required></textarea>
+      <label>Se pudesse mudar uma única coisa, o que seria?</label>
+      <textarea id="mudanca" required></textarea>
 
+      <label>Você entrou na parte de benefício? O que achou?</label>
+      <textarea id="beneficio" required></textarea>
 
-<label>Você entrou na parte de benefício? O que achou?</label>
-<textarea id="beneficio" required></textarea>
+      <label>Como você descreve sua experiência geral?</label>
+      <textarea id="experiencia" required></textarea>
 
+      <button type="submit">Enviar Avaliação</button>
 
-<label>Como você descreve sua experiência geral?</label>
-<textarea id="experiencia" required></textarea>
+      <p id="status"></p>
 
+      <hr />
 
-<button type="submit">Enviar Avaliação</button>
-<p id="status"></p>
-<hr />
-<button type="button" id="btn-carregar">Ver últimas avaliações</button>
-<ul id="lista-avaliacoes"></ul>
-</form>
-</div>
+      <button type="button" id="btn-carregar">Ver últimas avaliações</button>
+      <ul id="lista-avaliacoes"></ul>
+    </form>
+  </div>
 
   <script src="script.js"></script>
 </body>
