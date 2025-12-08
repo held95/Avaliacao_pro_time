@@ -27,7 +27,12 @@ registros.push(registro);
 
 
 // salvar
-localStorage.setItem("avaliacoes", JSON.stringify(registros));
+await fetch("/api/save", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ nota, comentario }),
+});
+
 
 
 status.style.color = "green";
