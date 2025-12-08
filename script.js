@@ -1,5 +1,5 @@
 // 🔗 URL do backend (troque depois pelo domínio real da Vercel)
-const BACKEND_URL = "https://https://protime-backend.vercel.app";
+const BACKEND_URL = "https://protime-backend.vercel.app";
 
 const form = document.getElementById("form-avaliacao");
 const statusEl = document.getElementById("status");
