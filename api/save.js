@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   }
 
   // CONFIGURAÇÃO — personalize aqui
-  const owner = "SEU_USUARIO_GITHUB";
-  const repo = "SEU_REPOSITORIO";
+  const owner = "held95";
+  const repo = "Avaliacao_pro_time";
   const filePath = "api/data.json";
   const token = process.env.GITHUB_TOKEN;
 
